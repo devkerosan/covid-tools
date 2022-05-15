@@ -5,7 +5,7 @@ const FormatJHUData = (data: string, country: string[]) => {
     const countryIndex = country.map((c) => {
         return RawData[0].indexOf(c);
     })
-    return RawData.map((arr) => {
+    return country.length === 0 ? RawData : RawData.map((arr) => {
         return arr.reduce((prev: string[], value, index) => {
             return index === 0 || countryIndex.includes(index) ? [...prev, value] : prev;
         }, []);

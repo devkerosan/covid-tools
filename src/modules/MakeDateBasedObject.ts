@@ -5,6 +5,7 @@ const MakeDateBasedObject = (rawdata: RawData[]): DateBasedObject => {
         const FormattedCountryData: DateBasedObject_country = CountryData.data.reduce((prev: DateBasedObject_country, DailyData: MicroRawData) => {
             return { ...prev, ...{ [DailyData.survey_date]: DailyData.percent_mc } };
         }, {});
+        console.log(CountryData.data[0]);
         const returns: DateBasedObject = { [CountryData.data[0].country]: FormattedCountryData };
         return { ...prev, ...returns };
     }, {});
