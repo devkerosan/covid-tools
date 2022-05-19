@@ -6,7 +6,7 @@ export type MicroRawData = {
     iso_code: string,
     mc_se: number,
     mc_se_unw: number,
-    percent_mc: number,
+    pct: number,
     percent_mc_unw: number,
     sample_size: number,
     survey_date: string

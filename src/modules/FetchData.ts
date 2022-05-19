@@ -1,8 +1,8 @@
 import { RawData } from "./FetchData_types";
 
-const FetchData = (country: string[], daterange: string): Promise<RawData>[] => {
+const FetchData = (country: string[]): Promise<RawData>[] => {
     const urlarr: string[] = country.map((c: string): string => {
-        return c === "UnitedStates" ? "" : `https://covidmap.umd.edu/api/resources?indicator=mask&type=daily&country=${c}&daterange=${daterange}`;
+        return c === "UnitedStates" ? "" : `https://covidmap.umd.edu/apiv2/resources?indicator=mask&type=daily&country=${c}`;
     }).filter((url: string): boolean => {
         return !(url === "");
     });

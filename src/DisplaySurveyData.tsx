@@ -18,18 +18,17 @@ const DisplaySurveyData: React.FC = () => {
     const [daterange, setDateRange] = useState<string>("");
     const [defaultCountryList, setDefaultCountryList] = useState<string[]>([]);
     const handleClick = async (): Promise<void> => {
-        const ResolvedData: RawData[] = await Promise.all(FetchData(country, daterange));
-        const RawData_US: RawData_US | undefined = country.includes("UnitedStates") === true ? await FetchUSData(daterange) : undefined;
-        setData(FormatSurveyData(ResolvedData, RawData_US, daterange));
-        console.log(FormatSurveyData(ResolvedData, RawData_US, daterange));
-        ExportData(FormatSurveyData(ResolvedData, RawData_US, daterange));
+        const ResolvedData: RawData[] = await Promise.all(FetchData(country));
+        const RawData_US: RawData_US | undefined = country.includes("UnitedStates") === true ? await FetchUSData() : undefined;
+        setData(FormatSurveyData(ResolvedData, RawData_US));
+        ExportData(FormatSurveyData(ResolvedData, RawData_US));
     }
     const handleCountryChange = (value: string[]): void => {
         setCountry(value);
     }
-    const handleDateRangeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        setDateRange(e.target.value);
-    }
+    // const handleDateRangeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    //     setDateRange(e.target.value);
+    // }
     useEffect(() => {
         const fetchCountryList = async () => {
             const RawCountryList = await fetch("https://covidmap.umd.edu/api/country")
@@ -58,9 +57,9 @@ const DisplaySurveyData: React.FC = () => {
                         <Option key="UnitedStates">United States</Option>
                     </Select>
                 </FormItem>
-                <FormItem label="Date">
+                {/* <FormItem label="Date">
                     <Input placeholder="yyyymmdd-yyyymmdd" onChange={handleDateRangeChange} />
-                </FormItem>
+                </FormItem> */}
             </Form>
             <Button type="primary" className="fetchButton" onClick={handleClick}>Fetch</Button>
             {/* <FormatDataForTable TableValue={data} /> */}

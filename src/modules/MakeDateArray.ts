@@ -12,10 +12,10 @@ const toNumberDate = (stringDate: string): DateRange => {
     return { start: parseInt(splitDate[0]), end: parseInt(splitDate[1]) };
 }
 
-const MakeDateArray = (stringDate: string): string[] => {
-    const daterange: DateRange = toNumberDate(stringDate);
-    const startDate: Date = new Date(toKebabDate(daterange.start));
-    const endDate: Date = new Date(toKebabDate(daterange.end));
+const MakeDateArray = (): string[] => {
+    const startDate: Date = new Date("2020-04-24");
+    const today = new Date();
+    const endDate: Date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 9);
     const days: number = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
     const DateArray: string[] = Array.from(Array(days + 1).keys()).map((_: number, index: number) => {
         const date: Date = new Date(startDate.setDate(startDate.getDate() + (index === 0 ? 0 : 1)));
