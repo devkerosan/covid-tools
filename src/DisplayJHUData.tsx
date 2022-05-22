@@ -34,9 +34,9 @@ const DisplayJHUData: React.FC = () => {
 
     return (
         <div className='fetchdata'>
-            <h2>JHU Covid-19 Dataset</h2>
+            <h2>海外での100万人あたり新規陽性者数（Johns Hopkins Univ./Our World in Data）</h2>
             <Form layout="vertical">
-                <FormItem label="Country">
+                <FormItem label="国名">
                     <Select mode="multiple" allowClear placeholder="Please select" style={{ width: '100%' }} onChange={handleCountryChange}>
                         {prepareCountryList(RawData)[0].map((data, index) => {
                             return index === 0 ? <Option key=""> </Option> : <Option key={data}>{data}</Option>

@@ -9,10 +9,10 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Tabs defaultActiveKey="1">
-        <TabPane tab="IHME" key="1">
+        <TabPane tab="海外アンケート" key="1">
           <DisplaySurveyData />
         </TabPane>
-        <TabPane tab="JHU" key="2">
+        <TabPane tab="海外の新規陽性者数" key="2">
           <DisplayJHUData />
         </TabPane>
       </Tabs>
