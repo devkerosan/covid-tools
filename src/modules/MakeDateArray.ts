@@ -12,8 +12,8 @@ const toNumberDate = (stringDate: string): DateRange => {
     return { start: parseInt(splitDate[0]), end: parseInt(splitDate[1]) };
 }
 
-const MakeDateArray = (): string[] => {
-    const startDate: Date = new Date("2020-04-24");
+const MakeDateArray = (start: string): string[] => {
+    const startDate: Date = new Date(start);
     const today = new Date();
     const endDate: Date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 9);
     const days: number = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);

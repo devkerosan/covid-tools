@@ -8,11 +8,11 @@ const { TabPane } = Tabs;
 const App: React.FC = () => {
   return (
     <div className="App">
-      <Tabs defaultActiveKey="1">
+      <Tabs defaultActiveKey="1" type="card">
         <TabPane tab="海外アンケート" key="1">
           <DisplaySurveyData />
         </TabPane>
-        <TabPane tab="海外の新規陽性者数" key="2">
+        <TabPane tab="諸外国の感染状況" key="2">
           <DisplayJHUData />
         </TabPane>
       </Tabs>

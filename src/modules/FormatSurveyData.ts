@@ -4,7 +4,7 @@ import MakeDateBasedObject from './MakeDateBasedObject';
 import MakeDateBasedObject_US from './MakeDateBasedObject_US';
 
 const FormatSurveyData = (rawdata: RawData[], rawdata_US: RawData_US | undefined): string[][] => {
-    const DateArray: string[] = MakeDateArray();
+    const DateArray: string[] = MakeDateArray("2020-04-23");
     const DateBasedObject: DateBasedObject = rawdata === undefined ? MakeDateBasedObject_US(rawdata_US) : rawdata_US === undefined ? MakeDateBasedObject(rawdata) : { ...MakeDateBasedObject(rawdata), ...MakeDateBasedObject_US(rawdata_US) };
     const CountriesName: string[] = Object.keys(DateBasedObject);
     const FormattedData: (string | number)[][] = DateArray.map((date: string) => {

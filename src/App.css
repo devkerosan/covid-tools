@@ -1,4 +1,7 @@
-
+.App {
+  margin: 0, auto;
+  
+}
 
 .App-logo {
   height: 40vmin;
@@ -33,4 +36,30 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.App > .ant-tabs-card .ant-tabs-content {
+  height: 120px;
+  margin-top: -16px;
+}
+
+.App > .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active, .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab-active {
+  color: #354259;
+  background: #DBE2EF;
+}
+
+.App > .ant-tabs-card > .ant-tabs-nav::before {
+  display: none;
+}
+.App > .ant-tabs-card .ant-tabs-tab {
+  background: transparent;
+  border-color: transparent;
+}
+.App > .ant-tabs-card .ant-tabs-tab-active {
+  background: #fff;
+  border-color: #fff;
+}
+
+.App > .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab {
+  border: 0;
 }

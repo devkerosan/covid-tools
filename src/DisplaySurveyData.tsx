@@ -44,9 +44,7 @@ const DisplaySurveyData: React.FC = () => {
     const handleClick = async (): Promise<void> => {
         const ResolvedData: RawData[] = await Promise.all(FetchData(country, indicator));
         const RawData_US: RawData_US | undefined = country.includes("UnitedStates") === true ? await FetchUSData() : undefined;
-        console.log(ResolvedData, country)
         const errc = ResolvedData.reduce((prev: string[], current, index) => {
-            console.log(country[index]);
             return current.data === null ? [...prev, country[index]] : [...prev];
         }, [])
         setErrorCountry(errc);
@@ -65,9 +63,6 @@ const DisplaySurveyData: React.FC = () => {
         localStorage.setItem("country", JSON.stringify(country));
     }
 
-    const handleSetClick = () => {
-        setCountry(JSON.parse(localStorage.getItem("country") || ""));
-    }
     // const handleDateRangeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     //     setDateRange(e.target.value);
     // }
@@ -108,7 +103,7 @@ const DisplaySurveyData: React.FC = () => {
                         <Option key="activity_work_outside_home">職場へ出社した割合</Option>
                     </Select>
                     <div style={{ margin: 5, padding: 5, backgroundColor: 'white', borderColor: 'grey', border: "1px solid", borderRadius: 5 }}>
-                        <Text>指標の説明</Text>
+                        <Text>指標の説明</Text><br />
                         <span>{IndicatorDetail[indicator]}</span>
                     </div>
 
@@ -121,8 +116,7 @@ const DisplaySurveyData: React.FC = () => {
                         {indicator === "mask" ? <Option key="UnitedStates">United States</Option> : <></>}
 
                     </Select>
-                    <Button type="primary" onClick={handleKeepClick}>Keep Countries</Button>
-                    <Button type="primary" onClick={handleSetClick}>Set Countries</Button>
+                    <Button type="primary" onClick={handleKeepClick}>デフォルトに設定</Button>
                 </FormItem>
                 <Text>データ取得エラー</Text>
                 <List style={{ backgroundColor: 'white' }} size="small" bordered dataSource={errorCountry} renderItem={item => <List.Item><CloseCircleTwoTone twoToneColor="red" /> {item}はデータがありません</List.Item>} />
@@ -130,7 +124,7 @@ const DisplaySurveyData: React.FC = () => {
                     <Input placeholder="yyyymmdd-yyyymmdd" onChange={handleDateRangeChange} />
                 </FormItem> */}
             </Form>
-            <Button type="primary" className="fetchButton" onClick={handleClick}>Fetch</Button>
+            <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>
             {/* <FormatDataForTable TableValue={data} /> */}
         </div>
     );
