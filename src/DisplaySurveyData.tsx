@@ -36,7 +36,7 @@ const IndicatorDetail: IndicatorDetail = {
 
 const DisplaySurveyData: React.FC = () => {
     const [data, setData] = useState<string[][]>([[]]);
-    const [country, setCountry] = useState<string[]>(JSON.parse(localStorage.getItem("country") || ""));
+    const [country, setCountry] = useState<string[]>([]);
     const [errorCountry, setErrorCountry] = useState<string[]>([]);
     const [indicator, setIndicator] = useState<string>("");
     const [daterange, setDateRange] = useState<string>("");
