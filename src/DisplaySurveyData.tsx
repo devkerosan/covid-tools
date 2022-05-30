@@ -116,7 +116,7 @@ const DisplaySurveyData: React.FC = () => {
                         {indicator === "mask" ? <Option key="UnitedStates">United States</Option> : <></>}
 
                     </Select>
-                    <Button type="primary" onClick={handleKeepClick}>デフォルトに設定</Button>
+                    {/* <Button type="primary" onClick={handleKeepClick}>デフォルトに設定</Button> */}
                 </FormItem>
                 <Text>データ取得エラー</Text>
                 <List style={{ backgroundColor: 'white' }} size="small" bordered dataSource={errorCountry} renderItem={item => <List.Item><CloseCircleTwoTone twoToneColor="red" /> {item}はデータがありません</List.Item>} />
