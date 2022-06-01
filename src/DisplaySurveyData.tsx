@@ -34,9 +34,12 @@ const IndicatorDetail: IndicatorDetail = {
     mask_public_transit_1d: "公共交通機関でマスクを着用していた人の割合　※アメリカはデータなし"
 };
 
-const DisplaySurveyData: React.FC = () => {
+const DisplaySurveyData: React.FC<{ display: string }> = (props) => {
+    if (localStorage.getItem("country") === null) {
+        localStorage.setItem("country", JSON.stringify([]));
+    }
     const [data, setData] = useState<string[][]>([[]]);
-    const [country, setCountry] = useState<string[]>([]);
+    const [country, setCountry] = useState<string[]>(JSON.parse(localStorage.getItem("country") || ""));
     const [errorCountry, setErrorCountry] = useState<string[]>([]);
     const [indicator, setIndicator] = useState<string>("");
     const [daterange, setDateRange] = useState<string>("");
@@ -83,8 +86,8 @@ const DisplaySurveyData: React.FC = () => {
         fetchCountryList();
     }, []);
     return (
-        <div className="fetchdata">
-            <h2>海外でのアンケート結果（Maryland and Facebook Survey）</h2>
+        <div className="fetchdata" style={{ display: props.display }}>
+            <h2>諸外国のアンケート結果（Maryland and Facebook Survey）</h2>
             <Form layout="vertical">
                 <FormItem label="指標">
                     <Select allowClear placeholder="Please select" style={{ width: '100%' }} onChange={handleIndicatorChange}>
@@ -116,7 +119,7 @@ const DisplaySurveyData: React.FC = () => {
                         {indicator === "mask" ? <Option key="UnitedStates">United States</Option> : <></>}
 
                     </Select>
-                    {/* <Button type="primary" onClick={handleKeepClick}>デフォルトに設定</Button> */}
+                    <Button type="primary" onClick={handleKeepClick}>デフォルトに設定</Button>
                 </FormItem>
                 <Text>データ取得エラー</Text>
                 <List style={{ backgroundColor: 'white' }} size="small" bordered dataSource={errorCountry} renderItem={item => <List.Item><CloseCircleTwoTone twoToneColor="red" /> {item}はデータがありません</List.Item>} />

@@ -22,7 +22,6 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
@@ -37,29 +36,6 @@
     transform: rotate(360deg);
   }
 }
-
-.App > .ant-tabs-card .ant-tabs-content {
-  height: 120px;
-  margin-top: -16px;
-}
-
-.App > .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active, .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab-active {
-  color: #354259;
-  background: #DBE2EF;
-}
-
-.App > .ant-tabs-card > .ant-tabs-nav::before {
-  display: none;
-}
-.App > .ant-tabs-card .ant-tabs-tab {
-  background: transparent;
-  border-color: transparent;
-}
-.App > .ant-tabs-card .ant-tabs-tab-active {
-  background: #fff;
-  border-color: #fff;
-}
-
-.App > .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab, .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab {
-  border: 0;
+.ant-layout-content {
+  background-color: white;
 }

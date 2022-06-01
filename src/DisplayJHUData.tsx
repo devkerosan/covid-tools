@@ -7,9 +7,12 @@ import FetchJHUData from './modules/FetchJHUData';
 import FormatJHUData from './modules/FormatJHUData';
 const { Option } = Select;
 
-const DisplayJHUData: React.FC = () => {
+const DisplayJHUData: React.FC<{ display: string }> = (props) => {
+    if (localStorage.getItem("country2") === null) {
+        localStorage.setItem("country2", JSON.stringify([]));
+    }
     const [RawData, setRawData] = useState<string[]>([]);
-    const [country, setCountry] = useState<string[]>([]);
+    const [country, setCountry] = useState<string[]>(JSON.parse(localStorage.getItem("country2") || ""));
     const [allCountryList, setAllCountryList] = useState<string[][]>([[]]);
     const [countryList, setCountryList] = useState<string[]>([]);
     const [indicator, setIndicator] = useState<string>("");
@@ -30,6 +33,10 @@ const DisplayJHUData: React.FC = () => {
         }
 
     };
+
+    const handleKeepClick = () => {
+        localStorage.setItem("country2", JSON.stringify(country));
+    }
 
     useEffect(() => {
         const update = async () => {
@@ -63,7 +70,7 @@ const DisplayJHUData: React.FC = () => {
     }, []);
 
     return (
-        <div className='fetchdata'>
+        <div className='fetchdata' style={{ display: props.display }}>
             <h2>諸外国の感染状況（Johns Hopkins Univ./Our World in Data）</h2>
             <Form layout="vertical">
                 <FormItem label="指標">
@@ -71,13 +78,15 @@ const DisplayJHUData: React.FC = () => {
                         <Option key="new_cases">新規陽性者数</Option>
                         <Option key="ICU"> 重症者数</Option>
                     </Select>
+
                 </FormItem>
                 <FormItem label="国名">
-                    <Select mode="multiple" allowClear placeholder="Please select" style={{ width: '100%' }} onChange={handleCountryChange}>
+                    <Select mode="multiple" allowClear placeholder="Please select" style={{ width: '100%' }} onChange={handleCountryChange} value={country}>
                         {countryList.map((data, index) => {
                             return index === 0 ? <Option key=""> </Option> : <Option key={data}>{data}</Option>
                         })}
                     </Select>
+                    <Button type="primary" onClick={handleKeepClick}>デフォルトに設定</Button>
                 </FormItem>
             </Form>
             <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>
