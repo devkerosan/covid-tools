@@ -128,6 +128,7 @@ const DisplaySurveyData: React.FC<{ display: string }> = (props) => {
                 </FormItem> */}
             </Form>
             <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>
+            <p><Text>出典：The University of Maryland Social Data Science Center Global COVID-19 Trends and Impact Survey, in partnership with Facebook（https://gisumd.github.io/COVID-19-API-Documentation/）</Text></p>
             {/* <FormatDataForTable TableValue={data} /> */}
         </div>
     );

@@ -1,4 +1,4 @@
-import { Select, Button } from 'antd';
+import { Select, Button, Typography } from 'antd';
 import Form from 'antd/lib/form/Form';
 import FormItem from 'antd/lib/form/FormItem';
 import { useEffect, useState } from 'react';
@@ -6,6 +6,7 @@ import ExportData from './modules/ExportData';
 import FetchJHUData from './modules/FetchJHUData';
 import FormatJHUData from './modules/FormatJHUData';
 const { Option } = Select;
+const { Text } = Typography;
 
 const DisplayJHUData: React.FC<{ display: string }> = (props) => {
     if (localStorage.getItem("country2") === null) {
@@ -90,6 +91,7 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
                 </FormItem>
             </Form>
             <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>
+            <p><Text>出典：Hannah Ritchie, Edouard Mathieu, Lucas Rodés-Guirao, Cameron Appel, Charlie Giattino, Esteban Ortiz-Ospina, Joe Hasell, Bobbie Macdonald, Diana Beltekian and Max Roser (2020) - "Coronavirus Pandemic (COVID-19)". Published online at OurWorldInData.org. Retrieved from: 'https://ourworldindata.org/coronavirus' [Online Resource]</Text></p>
         </div>
     )
 };

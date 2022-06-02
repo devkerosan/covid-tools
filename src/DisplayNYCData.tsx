@@ -1,8 +1,9 @@
-import { Form, Select, Button } from "antd";
+import { Form, Select, Button, Typography } from "antd";
 import FormItem from "antd/lib/form/FormItem";
 import { useEffect, useState } from "react";
 import ExportData from "./modules/ExportData";
 const { Option } = Select;
+const { Text } = Typography;
 
 const ExportNYCData = (data: string[], indicator: string) => {
     const index = indicator === "new_cases" ? 0 : 1;
@@ -47,7 +48,7 @@ const DisplayNYCData: React.FC<{ display: string }> = (props) => {
     }, []);
     return (
         <div className='fetchdata' style={{ display: props.display }}>
-            <h2>ニューヨーク市の感染状況（NewYork Times）</h2>
+            <h2>ニューヨーク市の感染状況（NYC Department of Health and Mental Hygiene）</h2>
             <Form layout="vertical">
                 <FormItem label="指標">
                     <Select allowClear placeholder="Please Select" style={{ width: '100%' }} onChange={handleIndicatorChange}>
@@ -57,6 +58,7 @@ const DisplayNYCData: React.FC<{ display: string }> = (props) => {
                 </FormItem>
             </Form>
             <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>
+            <p><Text>出典：NYC Department of Health and Mental Hygiene（https://github.com/nychealth/coronavirus-data）</Text></p>
         </div>
     )
 };
