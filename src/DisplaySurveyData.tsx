@@ -31,7 +31,19 @@ const IndicatorDetail: IndicatorDetail = {
     mask_restaurant_1d: "飲食店でマスクを着用していた人の割合　※アメリカはデータなし",
     mask_spent_time_1d: "同居人以外の人と過ごす際にマスクを着用していた人の割合　※アメリカはデータなし",
     mask_large_event_1d: "10人以上が参加するイベントでマスクを着用していた人の割合　※アメリカはデータなし",
-    mask_public_transit_1d: "公共交通機関でマスクを着用していた人の割合　※アメリカはデータなし"
+    mask_public_transit_1d: "公共交通機関でマスクを着用していた人の割合　※アメリカはデータなし",
+    worried_catch_covid: "コロナに感染することに不安を感じている人の割合　※アメリカはデータなし",
+    belief_distancing_effective: "ソーシャルディスタンスの確保に感染拡大を防ぐ効果があると考えている人の割合　※アメリカはデータなし",
+    belief_masking_effective: "マスクの着用に感染拡大を防ぐ効果があると考えている人の割合　※アメリカはデータなし",
+    others_distanced_public: "過去７日間、公共の場においてほとんどの人が1m以上の身体的距離を確保していたと感じる人の割合　※アメリカはデータなし",
+    others_masked_public: "過去７日間、公共の場においてほとんどの人がマスクを着用していたと感じる人の割合　※アメリカはデータなし",
+    belief_vaccinated_mask_unnecessary: "ワクチンを接種していればマスクを着用する必要はないと考えている人の割合　※アメリカはデータなし",
+    belief_children_immune: "子供はコロナに感染しないと考えている人の割合　※アメリカはデータなし",
+    belief_no_spread_hot_humid: "高温多湿な環境ではコロナは感染拡大しないと考えている人の割合　※アメリカはデータなし",
+    received_news_govt_health: "過去７日間、政府から発信されるコロナに関する情報を受け取った人の割合　※アメリカはデータなし",
+    trust_covid_info_govt_health: "政府の発信するコロナに関する情報を信用している人の割合　※アメリカはデータなし",
+    testing_rate: "過去14日間、コロナの検査を受けた人の割合　※アメリカはデータなし",
+    ever_tested: "これまでに一度でもコロナの検査を受けたことがある人の割合　※アメリカはデータなし"
 };
 
 const DisplaySurveyData: React.FC<{ display: string }> = (props) => {
@@ -104,6 +116,18 @@ const DisplaySurveyData: React.FC<{ display: string }> = (props) => {
                         <Option key="activity_shop">買い物をした人の割合</Option>
                         <Option key="activity_spent_time">同居人以外と過ごした人の割合</Option>
                         <Option key="activity_work_outside_home">職場へ出社した割合</Option>
+                        <Option key="worried_catch_covid">コロナを不安に感じている人の割合</Option>
+                        <Option key="belief_distancing_effective">ソーシャルディスタンスが効果的だと考えている人の割合</Option>
+                        <Option key="belief_masking_effective">マスクが効果的だと考えている人の割合</Option>
+                        <Option key="others_distanced_public">他人のソーシャルディスタンス率</Option>
+                        <Option key="others_masked_public">他人のマスク着用率</Option>
+                        <Option key="belief_vaccinated_mask_unnecessary">ワクチン接種していればマスクが不要と考える人の割合</Option>
+                        <Option key="belief_children_immune">子供はコロナにかからないと考える人の割合</Option>
+                        <Option key="belief_no_spread_hot_humid">高温多湿な環境であればコロナは感染拡大しないと考える人の割合</Option>
+                        <Option key="received_news_govt_health">政府から発信されるコロナに関する情報を受け取った人の割合</Option>
+                        <Option key="trust_covid_info_govt_health">政府から発信されるコロナに関する情報を信じる人の割合</Option>
+                        <Option key="testing_rate">最近検査を受けたか</Option>
+                        <Option key="ever_tested">検査を受けたことがあるか</Option>
                     </Select>
                     <div style={{ margin: 5, padding: 5, backgroundColor: 'white', borderColor: 'grey', border: "1px solid", borderRadius: 5 }}>
                         <Text>指標の説明</Text><br />

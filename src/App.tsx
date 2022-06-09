@@ -14,7 +14,7 @@ const items: MenuProps['items'] = [
   "ニューヨーク感染状況",
   "諸外国の感染状況(β版)",
   "諸外国アンケート(β版)",
-  "年代別・都道府県別感染状況",
+  // "年代別・都道府県別感染状況",
 ].map((icon, index) => ({
   key: String(index + 1),
   label: `${icon}`,
@@ -45,7 +45,7 @@ const App: React.FC = () => {
             <DisplayNYCData display={menu === "1" ? "block" : "none"} />
             <DisplayJHUData display={menu === "2" ? "block" : "none"} />
             <DisplaySurveyData display={menu === "3" ? "block" : "none"} />
-            <DisplayMHLWWeeklyData display={menu === "4" ? "block" : "none"} />
+            {/* <DisplayMHLWWeeklyData display={menu === "4" ? "block" : "none"} /> */}
           </Content>
         </Layout>
       </Layout>

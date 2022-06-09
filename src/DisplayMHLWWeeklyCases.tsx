@@ -19,6 +19,7 @@ const ExportMHLWWeeklyData = (data: string[], indicator: string) => {
 const DisplayMHLWWeeklyData: React.FC<{ display: string }> = (props) => {
     const [indicator, setIndicator] = useState<string>("");
     const [RawData, setRawData] = useState<string[]>([]);
+    const [arrData, setArrData] = useState<string[]>([]);
     const handleClick = async () => {
         ExportMHLWWeeklyData(RawData, indicator);
     };
@@ -29,7 +30,7 @@ const DisplayMHLWWeeklyData: React.FC<{ display: string }> = (props) => {
 
     useEffect(() => {
         const update = async () => {
-            const URLs = ["https://covid19.mhlw.go.jp/public/opendata/newly_confirmed_cases_detail_weekly.csv", "https://covid19.mhlw.go.jp/public/opendata/severe_cases_detail_weekly.csv"];
+            const URLs = ["https://raw.githubusercontent.com/nychealth/coronavirus-data/master/trends/cases-by-day.csv", "https://raw.githubusercontent.com/nychealth/coronavirus-data/master/trends/tests.csv"];
             const rawMHLWWeeklyData = URLs.map((url) => {
                 return fetch(url)
                     .then((response) => {
