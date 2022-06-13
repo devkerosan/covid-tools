@@ -11,8 +11,13 @@ import Form from 'antd/lib/form/Form';
 import FormItem from 'antd/lib/form/FormItem';
 import ExportData from './modules/ExportData';
 import { CloseCircleOutlined, CloseCircleTwoTone } from '@ant-design/icons';
+import { Line } from 'react-chartjs-2';
+import CsvChartsInterface from './modules/CsvChartsInterface';
+import { Chart, registerables } from 'chart.js';
 const { Option } = Select;
 const { Text } = Typography;
+
+Chart.register(...registerables)
 
 interface IndicatorDetail {
     [key: string]: string
@@ -56,6 +61,7 @@ const DisplaySurveyData: React.FC<{ display: string }> = (props) => {
     const [indicator, setIndicator] = useState<string>("");
     const [daterange, setDateRange] = useState<string>("");
     const [defaultCountryList, setDefaultCountryList] = useState<string[]>([]);
+    const [chartData, setChartData] = useState<any>({ labels: ["a"], datasets: [{ label: "b", data: "1" }] });
     const handleClick = async (): Promise<void> => {
         const ResolvedData: RawData[] = await Promise.all(FetchData(country, indicator));
         const RawData_US: RawData_US | undefined = country.includes("UnitedStates") === true ? await FetchUSData() : undefined;
@@ -76,6 +82,25 @@ const DisplaySurveyData: React.FC<{ display: string }> = (props) => {
 
     const handleKeepClick = () => {
         localStorage.setItem("country", JSON.stringify(country));
+    }
+
+
+    const handleChartClick = async () => {
+        const ResolvedData: RawData[] = await Promise.all(FetchData(country, indicator));
+        const RawData_US: RawData_US | undefined = country.includes("UnitedStates") === true ? await FetchUSData() : undefined;
+        const ArrayToCSV = (arr: string[][]) => {
+            let csvData = 'data:text/csv;charset=utf-8,'; /// 最初にcsvDataに出力方法を追加しておく
+            arr.forEach((a: string[]) => {
+                const row = a.join(',');
+                csvData += row + '\r\n';
+            });
+            return csvData;
+        };
+        const csv = ArrayToCSV(FormatSurveyData(ResolvedData.filter(c => c.data !== null), RawData_US));
+        console.log(csv)
+        const chartData = CsvChartsInterface(csv);
+        console.log(chartData);
+        setChartData(chartData);
     }
 
     // const handleDateRangeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -152,6 +177,10 @@ const DisplaySurveyData: React.FC<{ display: string }> = (props) => {
                 </FormItem> */}
             </Form>
             <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>
+            <Button type="primary" className="fetchButton" onClick={handleChartClick}>charts</Button>
+            <Line
+                data={{ ...chartData, pointRadius: 0 }}
+            />
             <p><Text>出典：The University of Maryland Social Data Science Center Global COVID-19 Trends and Impact Survey, in partnership with Facebook（https://gisumd.github.io/COVID-19-API-Documentation/）</Text></p>
             {/* <FormatDataForTable TableValue={data} /> */}
         </div>

@@ -2,11 +2,16 @@ import { Select, Button, Typography } from 'antd';
 import Form from 'antd/lib/form/Form';
 import FormItem from 'antd/lib/form/FormItem';
 import { useEffect, useState } from 'react';
+import { Chart, registerables } from 'chart.js';
+import { Line } from 'react-chartjs-2';
+import CsvChartsInterface from './modules/CsvChartsInterface';
 import ExportData from './modules/ExportData';
 import FetchJHUData from './modules/FetchJHUData';
 import FormatJHUData from './modules/FormatJHUData';
 const { Option } = Select;
 const { Text } = Typography;
+
+Chart.register(...registerables)
 
 const DisplayJHUData: React.FC<{ display: string }> = (props) => {
     if (localStorage.getItem("country2") === null) {
@@ -17,6 +22,7 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
     const [allCountryList, setAllCountryList] = useState<string[][]>([[]]);
     const [countryList, setCountryList] = useState<string[]>([]);
     const [indicator, setIndicator] = useState<string>("");
+    const [chartData, setChartData] = useState<any>({ labels: ["a"], datasets: [{ label: "b", data: "1" }] });
     const handleClick = async () => {
         const UpdatedData = FormatJHUData(RawData, country, indicator);
         ExportData(UpdatedData);
@@ -37,6 +43,22 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
 
     const handleKeepClick = () => {
         localStorage.setItem("country2", JSON.stringify(country));
+    }
+
+    const handleChartClick = () => {
+        const ArrayToCSV = (arr: string[][]) => {
+            let csvData = 'data:text/csv;charset=utf-8,'; /// 最初にcsvDataに出力方法を追加しておく
+            arr.forEach((a: string[]) => {
+                const row = a.join(',');
+                csvData += row + '\r\n';
+            });
+            return csvData;
+        };
+        const csv = ArrayToCSV(FormatJHUData(RawData, country, indicator));
+        console.log(csv)
+        const chartData = CsvChartsInterface(csv);
+        console.log(chartData);
+        setChartData(chartData);
     }
 
     useEffect(() => {
@@ -91,6 +113,10 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
                 </FormItem>
             </Form>
             <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>
+            <Button type="primary" className="fetchButton" onClick={handleChartClick}>charts</Button>
+            <Line
+                data={{ ...chartData, pointRadius: 0 }}
+            />
             <p><Text>出典：Hannah Ritchie, Edouard Mathieu, Lucas Rodés-Guirao, Cameron Appel, Charlie Giattino, Esteban Ortiz-Ospina, Joe Hasell, Bobbie Macdonald, Diana Beltekian and Max Roser (2020) - "Coronavirus Pandemic (COVID-19)". Published online at OurWorldInData.org. Retrieved from: 'https://ourworldindata.org/coronavirus' [Online Resource]</Text></p>
         </div>
     )
