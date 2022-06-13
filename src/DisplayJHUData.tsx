@@ -113,10 +113,11 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
                 </FormItem>
             </Form>
             <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>
-            <Button type="primary" className="fetchButton" onClick={handleChartClick}>charts</Button>
+
             <Line
                 data={{ ...chartData, pointRadius: 0 }}
             />
+            <Button type="primary" className="fetchButton" onClick={handleChartClick}>グラフ更新</Button>
             <p><Text>出典：Hannah Ritchie, Edouard Mathieu, Lucas Rodés-Guirao, Cameron Appel, Charlie Giattino, Esteban Ortiz-Ospina, Joe Hasell, Bobbie Macdonald, Diana Beltekian and Max Roser (2020) - "Coronavirus Pandemic (COVID-19)". Published online at OurWorldInData.org. Retrieved from: 'https://ourworldindata.org/coronavirus' [Online Resource]</Text></p>
         </div>
     )
