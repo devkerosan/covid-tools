@@ -37,7 +37,7 @@ const App: React.FC = () => {
             top: 0,
             bottom: 0,
           }}>
-          <div>Covid-19 Tools</div>
+          <div style={{ color: "white" }}>  Covid-19 Data Playground</div>
           <Menu theme="dark" mode="inline" items={items} onClick={handleMenuClick}></Menu>
         </Sider>
         <Layout className="site-layout" style={{ marginLeft: 200 }}>
