@@ -39,6 +39,8 @@ const FormatJHUData = (data: string[], country: string[], indicator: string): an
                 });
                 return [date, ...particularDateData];
             })
+            dateBasedArray.forEach((date) => date[0] = toKebabDate(parseInt(date[0])))
+            console.log(dateBasedArray)
 
             return [["date", ...country], ...dateBasedArray];
     }

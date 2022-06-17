@@ -1,4 +1,4 @@
-import { Select, Button, Typography } from 'antd';
+import { Select, Button, Typography, Space, Slider } from 'antd';
 import Form from 'antd/lib/form/Form';
 import FormItem from 'antd/lib/form/FormItem';
 import { useEffect, useState } from 'react';
@@ -8,6 +8,7 @@ import CsvChartsInterface from './modules/CsvChartsInterface';
 import ExportData from './modules/ExportData';
 import FetchJHUData from './modules/FetchJHUData';
 import FormatJHUData from './modules/FormatJHUData';
+import 'chartjs-adapter-moment';
 const { Option } = Select;
 const { Text } = Typography;
 
@@ -22,7 +23,8 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
     const [allCountryList, setAllCountryList] = useState<string[][]>([[]]);
     const [countryList, setCountryList] = useState<string[]>([]);
     const [indicator, setIndicator] = useState<string>("");
-    const [chartData, setChartData] = useState<any>({ labels: ["a"], datasets: [{ label: "b", data: "1" }] });
+    const [chartData, setChartData] = useState<any>({ labels: [""], datasets: [{ label: "", data: [""] }] });
+    const [chartWidth, setChartWidth] = useState<any>([0, 0]);
     const handleClick = async () => {
         const UpdatedData = FormatJHUData(RawData, country, indicator);
         ExportData(UpdatedData);
@@ -59,6 +61,11 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
         const chartData = CsvChartsInterface(csv);
         console.log(chartData);
         setChartData(chartData);
+        setChartWidth([0, chartData.datasets[0].data.length])
+    }
+
+    const handleSliderChange = (value: [number, number]) => {
+        setChartWidth(value);
     }
 
     useEffect(() => {
@@ -92,6 +99,13 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
         update();
     }, []);
 
+    const formatter = (value: number | undefined) => {
+        if (value === undefined) {
+            return;
+        }
+        return chartData.labels[value];
+    }
+
     return (
         <div className='fetchdata' style={{ display: props.display }}>
             <h2>諸外国の感染状況（Johns Hopkins Univ./Our World in Data）</h2>
@@ -112,12 +126,33 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
                     <Button type="primary" onClick={handleKeepClick}>デフォルトに設定</Button>
                 </FormItem>
             </Form>
-            <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>
+
 
             <Line
                 data={{ ...chartData, pointRadius: 0 }}
+                options={{
+                    scales: {
+                        x: {
+                            type: 'timeseries',
+                            time: {
+                                parser: 'y-M-D',
+                                unit: 'month'
+                            },
+                            min: chartData.labels[chartWidth[0]],
+                            max: chartData.labels[chartWidth[1]],
+                            ticks: {
+                                source: 'labels'
+                            }
+                        }
+                    }
+                }}
             />
-            <Button type="primary" className="fetchButton" onClick={handleChartClick}>グラフ更新</Button>
+            <Slider range max={chartData.datasets[0].data.length - 1} onChange={handleSliderChange} value={chartWidth} tipFormatter={formatter} />
+            <Space size={"small"}>
+                <Button type="primary" className="fetchButton" onClick={handleChartClick}>グラフ更新</Button>
+                <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>
+            </Space>
+
             <p><Text>出典：Hannah Ritchie, Edouard Mathieu, Lucas Rodés-Guirao, Cameron Appel, Charlie Giattino, Esteban Ortiz-Ospina, Joe Hasell, Bobbie Macdonald, Diana Beltekian and Max Roser (2020) - "Coronavirus Pandemic (COVID-19)". Published online at OurWorldInData.org. Retrieved from: 'https://ourworldindata.org/coronavirus' [Online Resource]</Text></p>
         </div>
     )

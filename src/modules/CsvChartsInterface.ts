@@ -7,14 +7,17 @@ const CsvChartsInterface = (csv: string) => {
         return row.split(",");
     });
     const zeroArray = arrayData.filter((val: string[]) => {
-        const boolean = val.slice(1, val.length - 1).every((val2) => {
+        const boolean = val.slice(1, val.length - 1).some((val2) => {
             return val2 !== "0" && val2 !== "0.0"
         })
         return boolean;
 
     });
+
     zeroArray[0].shift();
+
     zeroArray.splice(1, 1);
+
     const labels = zeroArray.map((row) => {
         return row[0];
     }).slice(1);
@@ -24,10 +27,12 @@ const CsvChartsInterface = (csv: string) => {
     });
     zeroArray.forEach((row) => {
         row.forEach((data, index) => {
+
             dataset[index].push(data);
         })
     })
     const datasets = datasetName.map((country, index) => {
+        dataset[index].shift();
         return {
             label: country,
             data: Backward7daysAverage(dataset[index]),

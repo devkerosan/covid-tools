@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { Button, Select, Input, Space, Card, Typography, List } from 'antd';
+import { Button, Select, Input, Space, Card, Typography, List, Slider } from 'antd';
 import FormatSurveyData from './modules/FormatSurveyData';
 import './FetchData.css';
 import FetchUSData from './modules/FetchUSData';
@@ -61,7 +61,8 @@ const DisplaySurveyData: React.FC<{ display: string }> = (props) => {
     const [indicator, setIndicator] = useState<string>("");
     const [daterange, setDateRange] = useState<string>("");
     const [defaultCountryList, setDefaultCountryList] = useState<string[]>([]);
-    const [chartData, setChartData] = useState<any>({ labels: ["a"], datasets: [{ label: "b", data: "1" }] });
+    const [chartData, setChartData] = useState<any>({ labels: [""], datasets: [{ label: "", data: [""] }] });
+    const [chartWidth, setChartWidth] = useState<any>([0, 0]);
     const handleClick = async (): Promise<void> => {
         const ResolvedData: RawData[] = await Promise.all(FetchData(country, indicator));
         const RawData_US: RawData_US | undefined = country.includes("UnitedStates") === true ? await FetchUSData() : undefined;
@@ -101,6 +102,18 @@ const DisplaySurveyData: React.FC<{ display: string }> = (props) => {
         const chartData = CsvChartsInterface(csv);
         console.log(chartData);
         setChartData(chartData);
+        setChartWidth([0, chartData.datasets[0].data.length])
+    }
+
+    const handleSliderChange = (value: [number, number]) => {
+        setChartWidth(value);
+    }
+
+    const formatter = (value: number | undefined) => {
+        if (value === undefined) {
+            return;
+        }
+        return chartData.labels[value];
     }
 
     // const handleDateRangeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -170,18 +183,41 @@ const DisplaySurveyData: React.FC<{ display: string }> = (props) => {
                     </Select>
                     <Button type="primary" onClick={handleKeepClick}>デフォルトに設定</Button>
                 </FormItem>
-                <Text>データ取得エラー</Text>
-                <List style={{ backgroundColor: 'white' }} size="small" bordered dataSource={errorCountry} renderItem={item => <List.Item><CloseCircleTwoTone twoToneColor="red" /> {item}はデータがありません</List.Item>} />
-                {/* <FormItem label="Date">
-                    <Input placeholder="yyyymmdd-yyyymmdd" onChange={handleDateRangeChange} />
-                </FormItem> */}
+
             </Form>
-            <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>
+
 
             <Line
                 data={{ ...chartData, pointRadius: 0 }}
+                options={{
+                    scales: {
+                        x: {
+                            type: 'timeseries',
+                            time: {
+                                parser: 'y-M-D',
+                                unit: 'month'
+                            },
+                            min: chartData.labels[chartWidth[0]],
+                            max: chartData.labels[chartWidth[1]],
+                            ticks: {
+                                source: 'labels'
+                            }
+                        }
+                    }
+                }}
             />
-            <Button type="primary" className="fetchButton" onClick={handleChartClick}>グラフ更新</Button>
+            <Slider range max={chartData.datasets[0].data.length - 1} onChange={handleSliderChange} value={chartWidth} tipFormatter={formatter} />
+            <Space size={"small"}>
+                <Button type="primary" className="fetchButton" onClick={handleChartClick}>グラフ更新</Button>
+                <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>
+            </Space><br />
+            <Text>データ取得エラー</Text>
+            <List style={{ backgroundColor: 'white' }} size="small" bordered dataSource={errorCountry} renderItem={item => <List.Item><CloseCircleTwoTone twoToneColor="red" /> {item}はデータがありません</List.Item>} />
+
+            {/* <FormItem label="Date">
+                    <Input placeholder="yyyymmdd-yyyymmdd" onChange={handleDateRangeChange} />
+                </FormItem> */}
+
             <p><Text>出典：The University of Maryland Social Data Science Center Global COVID-19 Trends and Impact Survey, in partnership with Facebook（https://gisumd.github.io/COVID-19-API-Documentation/）</Text></p>
             {/* <FormatDataForTable TableValue={data} /> */}
         </div>
