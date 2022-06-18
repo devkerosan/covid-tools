@@ -136,7 +136,10 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
                             type: 'timeseries',
                             time: {
                                 parser: 'y-M-D',
-                                unit: 'month'
+                                unit: 'day',
+                                displayFormats: {
+                                    day: 'YYYY-MM-DD'
+                                }
                             },
                             min: chartData.labels[chartWidth[0]],
                             max: chartData.labels[chartWidth[1]],
