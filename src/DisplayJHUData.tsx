@@ -1,7 +1,7 @@
-import { Select, Button, Typography, Space, Slider } from 'antd';
+import { Select, Button, Typography, Space, Slider, Input } from 'antd';
 import Form from 'antd/lib/form/Form';
 import FormItem from 'antd/lib/form/FormItem';
-import { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import CsvChartsInterface from './modules/CsvChartsInterface';
@@ -9,6 +9,8 @@ import ExportData from './modules/ExportData';
 import FetchJHUData from './modules/FetchJHUData';
 import FormatJHUData from './modules/FormatJHUData';
 import 'chartjs-adapter-moment';
+import ExportFile from './modules/ExportFile';
+import { json } from 'stream/consumers';
 const { Option } = Select;
 const { Text } = Typography;
 
@@ -68,6 +70,33 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
         setChartWidth(value);
     }
 
+    const handleExportSettingsClick = (countryList: string[]) => {
+        const jsonData = JSON.stringify(
+            {
+                list1: countryList,
+            }
+        );
+        console.log(jsonData)
+        ExportFile(jsonData, "settings", "json")
+    }
+
+    const handleFileSelectChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const fileReader = new FileReader();
+        if (e.target.files === null) {
+            return
+        }
+        const file = e.target.files[0];
+        fileReader.readAsText(file);
+        fileReader.onloadend = () => {
+            if (fileReader.result === null) {
+                return;
+            }
+            const result = fileReader.result;
+            const country = JSON.parse(typeof result === "string" ? result : result.toString())
+            setCountry(country.list1);
+        }
+    }
+
     useEffect(() => {
         const update = async () => {
             const JHUData = await Promise.all(FetchJHUData());
@@ -124,6 +153,8 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
                         })}
                     </Select>
                     <Button type="primary" onClick={handleKeepClick}>デフォルトに設定</Button>
+                    <Button type="primary" onClick={() => handleExportSettingsClick(country)}>設定をエクスポート</Button>
+                    <Input type="file" bordered={false} onChange={(e) => handleFileSelectChange(e)}></Input>
                 </FormItem>
             </Form>
 
