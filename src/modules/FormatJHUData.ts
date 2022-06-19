@@ -23,23 +23,34 @@ const FormatJHUData = (data: string[], country: string[], indicator: string): an
             const ICURawData = data[1].split("\n").map((arr) => {
                 return arr.split(",");
             });
-            const ExtractedCountryData: { [key: string]: string }[] = country.map((c) => {
+
+            const MappedData: Map<string, string>[] = [];
+            country.forEach((c) => {
                 const filterdData = ICURawData.filter((arr) => {
                     return arr[0] === c && arr[3] === "Daily ICU occupancy per million";
                 });
-                return filterdData.reduce((prev, current) => {
-                    return { ...prev, [current[2]]: current[4] }
-                }, {});
-            });
-
+                const ExtractedCountryDataMap = new Map<string, string>();
+                filterdData.forEach((data) => {
+                    ExtractedCountryDataMap.set(data[2], data[4]);
+                })
+                MappedData.push(ExtractedCountryDataMap);
+            })
+            console.log(MappedData)
             const dateArray = MakeDateArray("2020-01-01");
+            let recentExistDate = ["0", "0", "0"];
             const dateBasedArray = dateArray.map((date) => {
-                const particularDateData = ExtractedCountryData.map((c) => {
-                    return c[toKebabDate(parseInt(date))];
+                const particularDateData = MappedData.map((c, index) => {
+                    if (c.get(toKebabDate(parseInt(date))) === undefined) {
+                        console.log(recentExistDate)
+                        return c.get(toKebabDate(parseInt(recentExistDate[index])));
+                    }
+                    console.log(date)
+                    recentExistDate[index] = date;
+                    return c.get(toKebabDate(parseInt(date)));
                 });
                 return [date, ...particularDateData];
             })
-            dateBasedArray.forEach((date) => date[0] = toKebabDate(parseInt(date[0])))
+            dateBasedArray.forEach((date) => date[0] = toKebabDate(parseInt(date[0] as string)))
             console.log(dateBasedArray)
 
             return [["date", ...country], ...dateBasedArray];

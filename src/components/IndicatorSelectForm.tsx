@@ -1,24 +1,32 @@
 import { Select } from "antd";
+import FormItem from "antd/lib/form/FormItem";
 const { Option } = Select;
 
-// const handleIndicatorChange = (value: string) => {
-//     setIndicator(value);
-//     if (value === "new_cases") {
-//         setCountryList(allCountryList[0]);
-//     } else if (value === "ICU") {
-//         setCountryList(allCountryList[1]);
-//     }
+type IndicatorOption = {
+    key: string,
+    itemName: string
+}
 
-// };
+type Props = {
+    options: IndicatorOption[],
+    label: string,
+    onChange: (value: string) => void
+}
 
-const IndicatorSelectForm: React.FC = () => {
+const IndicatorSelectForm: React.FC<Props> = (props) => {
+    const handleIndicatorChange = (value: string) => {
+        props.onChange(value);
+    };
     return (
-        <div></div>
-        // <Select allowClear placeholder="Please Select" style={{ width: '100%' }} onChange={handleIndicatorChange}>
-        //     <Option key="new_cases">新規陽性者数</Option>
-        //     <Option key="ICU"> 重症者数</Option>
-        // </Select>
-
+        <FormItem label={props.label}>
+            <Select allowClear placeholder="Please Select" style={{ width: '100%' }} onChange={handleIndicatorChange}>
+                {props.options.map((option) => {
+                    return (
+                        <Option key={option.key}>{option.itemName}</Option>
+                    )
+                })}
+            </Select>
+        </FormItem>
     )
 };
 

@@ -6,6 +6,7 @@ const CsvChartsInterface = (csv: string) => {
     const arrayData = csv.split("\r\n").map((row) => {
         return row.split(",");
     });
+
     const zeroArray = arrayData.filter((val: string[]) => {
         const boolean = val.slice(1, val.length - 1).some((val2) => {
             return val2 !== "0" && val2 !== "0.0"
@@ -13,7 +14,8 @@ const CsvChartsInterface = (csv: string) => {
         return boolean;
 
     });
-
+    console.log(arrayData)
+    console.log(zeroArray)
     zeroArray[0].shift();
 
     zeroArray.splice(1, 1);
@@ -42,7 +44,7 @@ const CsvChartsInterface = (csv: string) => {
             borderWidth: 2,
         }
     }).slice(1);
-
+    console.log(datasets)
     return {
         labels: labels,
         datasets: datasets
