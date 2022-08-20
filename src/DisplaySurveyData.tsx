@@ -1,16 +1,13 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { Button, Select, Input, Space, Card, Typography, List, Slider } from 'antd';
+import { Button, Select, Input, Space, Card, Typography, List, Slider, Row, Col } from 'antd';
 import FormatSurveyData from './modules/FormatSurveyData';
 import './FetchData.css';
 import FetchUSData from './modules/FetchUSData';
 import { RawData, RawData_US } from './modules/FetchData_types';
 import FetchData from './modules/FetchData';
-import Form from 'antd/lib/form/Form';
 import ExportData from './modules/ExportData';
 import { CloseCircleOutlined, CloseCircleTwoTone } from '@ant-design/icons';
-import { Line } from 'react-chartjs-2';
-import CsvChartsInterface from './modules/CsvChartsInterface';
 import { Chart, registerables } from 'chart.js';
 import IndicatorSelectForm from './components/IndicatorSelectForm';
 import CountrySelectForm from './components/CountrySelectForm';
@@ -128,21 +125,24 @@ const DisplaySurveyData: React.FC<{ display: string }> = (props) => {
     return (
         <div className="fetchdata" style={{ display: props.display }}>
             <h2>諸外国のアンケート結果（Maryland and Facebook Survey）</h2>
-            <Form layout="vertical">
-                <IndicatorSelectForm
-                    options={IndicatorOptions}
-                    label="指標"
-                    onChange={(value) => setIndicator(value)}
-                />
-                <CountrySelectForm
-                    selectedCountry={country}
-                    countryList={defaultCountryList}
-                    label="国名"
-                    onCountryChange={(value) => setCountry(value)}
-                    onFileSelectChange={(value) => setCountry(value)}
-                />
-
-            </Form>
+            <Row>
+                <Col span={12}>
+                    <IndicatorSelectForm
+                        options={IndicatorOptions}
+                        label="指標"
+                        onChange={(value) => setIndicator(value)}
+                    />
+                </Col>
+                <Col span={12}>
+                    <CountrySelectForm
+                        selectedCountry={country}
+                        countryList={defaultCountryList}
+                        label="国名"
+                        onCountryChange={(value) => setCountry(value)}
+                        onFileSelectChange={(value) => setCountry(value)}
+                    />
+                </Col>
+            </Row>
             <LineChartField data={RawData} />
             <Space size={"small"}>
                 <Button type="primary" className="fetchButton" onClick={handleClick}>データ取得</Button>

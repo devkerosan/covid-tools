@@ -2,6 +2,12 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "/Users/komikero/Documents/development/data-dl-api"
+		},
+		{
+			"path": "/Users/komikero/Documents/development/DataPlayground"
 		}
 	],
 	"settings": {}

@@ -39,3 +39,10 @@
 .ant-layout-content {
   background-color: white;
 }
+
+.file { 
+  background-color: "#1890FF";
+  color: "white";
+  padding: "8px 16px";
+  border-radius: "16px";
+}

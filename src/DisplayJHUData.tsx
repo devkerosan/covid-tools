@@ -1,4 +1,4 @@
-import { Button, Typography, Space, Slider } from 'antd';
+import { Button, Typography, Space, Slider, Col, Row } from 'antd';
 import Form from 'antd/lib/form/Form';
 import React, { useEffect, useState } from 'react';
 import ExportData from './modules/ExportData';
@@ -8,6 +8,7 @@ import IndicatorSelectForm from './components/IndicatorSelectForm';
 import CountrySelectForm from './components/CountrySelectForm';
 import LineChartField from './components/LineChartField';
 import useFetchedData from './hooks/useFetchedData';
+import csvSplit from './modules/csvSplit';
 const { Text } = Typography;
 const IndicatorOptions = [{ key: "new_cases", itemName: "新規陽性者数" }, { key: "ICU", itemName: "重症者数" }];
 
@@ -50,10 +51,8 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
             const fetchedCountryList = await Promise.all(rawFetchedCountryList);
             const makeCountryList = (fetchedData: string, countryindex: number) => {
                 return fetchedData.split("\n").map((arr) => {
-                    return arr.split(",");
-                }).reduce((prev, current, index) => {
-                    return index === 0 ? [...prev] : [...prev, current[countryindex]];
-                }, [])
+                    return csvSplit(arr)[countryindex];
+                })
             };
             const CountryList = fetchedCountryList.map((country, index) => {
                 const arrayedCountryList = index === 0 ? makeCountryList(country, 1) : makeCountryList(country, 0);
@@ -67,19 +66,25 @@ const DisplayJHUData: React.FC<{ display: string }> = (props) => {
     return (
         <div className='fetchdata' style={{ display: props.display }}>
             <h2>諸外国の感染状況（Johns Hopkins Univ./Our World in Data）</h2>
-            <Form layout="vertical">
-                <IndicatorSelectForm
-                    options={IndicatorOptions}
-                    label="指標"
-                    onChange={handleIndicatorChange}
-                />
-                <CountrySelectForm
-                    selectedCountry={country}
-                    countryList={countryList}
-                    label="国名" onCountryChange={(value) => setCountry(value)}
-                    onFileSelectChange={(value) => setCountry(value)}
-                />
-            </Form>
+            <Row>
+                <Col span={12}>
+                    <IndicatorSelectForm
+                        options={IndicatorOptions}
+                        label="指標"
+                        onChange={handleIndicatorChange}
+                    />
+                </Col>
+                <Col span={12}>
+                    <CountrySelectForm
+                        selectedCountry={country}
+                        countryList={countryList}
+                        label="国名" onCountryChange={(value) => setCountry(value)}
+                        onFileSelectChange={(value) => setCountry(value)}
+                    />
+                </Col>
+            </Row>
+
+
             <LineChartField
                 data={FormatJHUData(RawData, country, indicator)}
             />

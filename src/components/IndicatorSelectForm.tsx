@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Form, Select } from "antd";
 import FormItem from "antd/lib/form/FormItem";
 const { Option } = Select;
 
@@ -18,7 +18,8 @@ const IndicatorSelectForm: React.FC<Props> = (props) => {
         props.onChange(value);
     };
     return (
-        <FormItem label={props.label}>
+        <Form layout="vertical" style={{ padding: "10px", margin: "10px", backgroundColor: "white", borderRadius: "10px" }}>
+            <span className="text-base">{props.label}</span>
             <Select allowClear placeholder="Please Select" style={{ width: '100%' }} onChange={handleIndicatorChange}>
                 {props.options.map((option) => {
                     return (
@@ -26,7 +27,8 @@ const IndicatorSelectForm: React.FC<Props> = (props) => {
                     )
                 })}
             </Select>
-        </FormItem>
+        </Form>
+
     )
 };
 
